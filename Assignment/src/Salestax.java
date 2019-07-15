@@ -9,6 +9,7 @@ import java.io.IOException;
 
 public class Salestax {
 	String fn="E:\\input.csv";
+	static String fo="E:\\output.csv";
 	float x=0;
 	boolean checkExistance(String filename)
 	{
@@ -16,7 +17,7 @@ public class Salestax {
 		return f.exists();
 		
 	}
-	String readFile(String filename)
+	void readFile(String filename)
 	{
 
 		String s=null;
@@ -34,9 +35,9 @@ public class Salestax {
 				String q=tokens[3];
 				
 				float total=getTotal(up, q);
-				String finalstr=s+","+total+","+(up+total)+System.lineSeparator();
+				String finalstr=s+","+total+","+(up+total);
 				System.out.println("Final data= "+finalstr);
-				writeFile("E:\\output.csv", finalstr);
+				writeFile(fo, finalstr);
 				
 			}
 		}
@@ -44,7 +45,6 @@ public class Salestax {
 		{
 			e.printStackTrace();
 		}
-		return s;
 	}
 	float getTotal(int up, String q)
 	{
@@ -63,7 +63,7 @@ public class Salestax {
 		try(FileWriter fw = new FileWriter(filename,true);BufferedWriter bw = new BufferedWriter(fw)){
 			
 		
-			bw.append(finalstr);
+			bw.append(System.lineSeparator()+finalstr);
 			bw.flush();
 			
 		}
@@ -74,13 +74,15 @@ public class Salestax {
 	public static void main(String[] args) {
 		Salestax f=new Salestax();
 		String fn="E:\\input.csv";
+		String head="id,name,price,country,salestax,finalprice";
 		boolean ex=f.checkExistance(fn);
 		if(ex!=true)
 			System.out.println("invalid path");
 		else
 			{
-			String inputdata=f.readFile(fn);
-			System.out.println(inputdata);
+			f.writeFile(fo,head);
+			f.readFile(fn);
+			System.out.println("Data Updated Succesfully");
 			}
 }
 }
